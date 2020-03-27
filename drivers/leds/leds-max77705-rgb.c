@@ -296,8 +296,8 @@ static int max77705_rgb_ramp(struct device *dev, int ramp_up, int ramp_down)
 
 	pr_info("leds-max77705-rgb: %s\n", __func__);
 
-	led_fade_time_up = led_enable_fade ? led_fade_time_up : LED_RMP_TIME;
-	led_fade_time_down = led_enable_fade ? led_fade_time_down : LED_RMP_TIME;
+	if (! led_enable_fade)
+		led_fade_time_up = led_fade_time_down = LED_RMP_TIME;
 
 	if (ramp_up > led_fade_time_up)
 		ramp_up = (ramp_up - led_fade_time_up) * 2 + led_fade_time_up;
@@ -607,26 +607,43 @@ static ssize_t store_max77705_rgb_pattern(struct device *dev,
 		max77705_rgb_set_state(&max77705_rgb->led[RED], led_dynamic_current, LED_ALWAYS_ON);
 		break;
 	case CHARGING_ERR:
-		max77705_rgb_ramp(dev, led_fade_time_up, led_fade_time_down);
-		max77705_rgb_blink(dev, 500, 500);
+		if (led_enable_fade) {
+			max77705_rgb_ramp(dev, led_fade_time_up, led_fade_time_down);
+			max77705_rgb_blink(dev, led_fade_time_up, 500);
+		} else {
+			max77705_rgb_blink(dev, 500, 500);
+		}
 		max77705_rgb_set_state(&max77705_rgb->led[RED], led_dynamic_current, LED_BLINK);
 		break;
 	case MISSED_NOTI:
-		max77705_rgb_ramp(dev, led_fade_time_up, led_fade_time_down);
-		max77705_rgb_blink(dev, 500, 5000);
+		if (led_enable_fade) {
+			max77705_rgb_ramp(dev, led_fade_time_up, led_fade_time_down);
+			max77705_rgb_blink(dev, led_fade_time_up, 5000);
+		} else {
+			max77705_rgb_blink(dev, 500, 5000);
+		}
 		max77705_rgb_set_state(&max77705_rgb->led[BLUE], led_dynamic_current, LED_BLINK);
 		break;
 	case LOW_BATTERY:
-		max77705_rgb_ramp(dev, led_fade_time_up, led_fade_time_down);
-		max77705_rgb_blink(dev, 500, 5000);
+		if (led_enable_fade) {
+			max77705_rgb_ramp(dev, led_fade_time_up, led_fade_time_down);
+			max77705_rgb_blink(dev, led_fade_time_up, 5000);
+		} else {
+			max77705_rgb_blink(dev, 500, 5000);
+		}
 		max77705_rgb_set_state(&max77705_rgb->led[RED], led_dynamic_current, LED_BLINK);
 		break;
 	case FULLY_CHARGED:
 		max77705_rgb_set_state(&max77705_rgb->led[GREEN], led_dynamic_current, LED_ALWAYS_ON);
 		break;
 	case POWERING:
-		max77705_rgb_ramp(dev, led_fade_time_up, led_fade_time_down);
-		max77705_rgb_blink(dev, 200, 200);
+		if (led_enable_fade) {
+			max77705_rgb_ramp(dev, led_fade_time_up, led_fade_time_down);
+			max77705_rgb_blink(dev, led_fade_time_up, 200);
+		} else {
+			max77705_rgb_ramp(dev, LED_RMP_TIME, LED_RMP_TIME);
+			max77705_rgb_blink(dev, 200, 200);
+		}
 		max77705_rgb_set_state(&max77705_rgb->led[BLUE], led_dynamic_current, LED_ALWAYS_ON);
 		max77705_rgb_set_state(&max77705_rgb->led[GREEN], led_dynamic_current, LED_BLINK);
 		break;
@@ -939,7 +956,7 @@ static ssize_t led_fade_store(struct device *dev,
 
 	retval = sscanf(buf, "%1d", &enabled);
 
-	if (retval != 0 && (enabled == 0 || enabled == 1))
+	if (retval && (enabled == 0 || enabled == 1))
 		led_enable_fade = enabled;
 
 	return count;
@@ -963,7 +980,7 @@ static ssize_t led_fade_time_up_store(struct device *dev,
 
 	retval = sscanf(buf, "%d", &val);
 
-	if (retval != 0 && val >= 100 && val <= 4000)
+	if (retval && val >= 100 && val <= 4000)
 		led_fade_time_up = val;
 
 	return count;
@@ -987,7 +1004,7 @@ static ssize_t led_fade_time_down_store(struct device *dev,
 
 	retval = sscanf(buf, "%d", &val);
 
-	if (retval != 0 && val >= 100 && val <= 4000)
+	if (retval && val >= 100 && val <= 4000)
 		led_fade_time_down = val;
 
 	return count;
@@ -996,7 +1013,7 @@ static ssize_t led_fade_time_down_store(struct device *dev,
 /* permission for sysfs node */
 static DEVICE_ATTR(delay_on, 0640, led_delay_on_show, led_delay_on_store);
 static DEVICE_ATTR(delay_off, 0640, led_delay_off_show, led_delay_off_store);
-static DEVICE_ATTR(blink, 0640, NULL, led_blink_store);
+static DEVICE_ATTR(blink, 0220, NULL, led_blink_store);
 
 #ifdef SEC_LED_SPECIFIC
 /* below nodes is SAMSUNG specific nodes */
@@ -1005,10 +1022,10 @@ static DEVICE_ATTR(led_g, 0220, NULL, store_led_g);
 static DEVICE_ATTR(led_b, 0220, NULL, store_led_b);
 /* led_pattern node permission is 222 */
 /* To access sysfs node from other groups */
-static DEVICE_ATTR(led_pattern, 0660, NULL, store_max77705_rgb_pattern);
-static DEVICE_ATTR(led_blink, 0660, NULL,  store_max77705_rgb_blink);
-static DEVICE_ATTR(led_brightness, 0660, NULL, store_max77705_rgb_brightness);
-static DEVICE_ATTR(led_lowpower, 0660, NULL,  store_max77705_rgb_lowpower);
+static DEVICE_ATTR(led_pattern, 0660, show_max77705_rgb_pattern, store_max77705_rgb_pattern);
+static DEVICE_ATTR(led_blink, 0660, show_max77705_rgb_blink,  store_max77705_rgb_blink);
+static DEVICE_ATTR(led_brightness, 0660, show_max77705_rgb_brightness, store_max77705_rgb_brightness);
+static DEVICE_ATTR(led_lowpower, 0660, show_max77705_rgb_lowpower,  store_max77705_rgb_lowpower);
 static DEVICE_ATTR(led_fade, 0660, led_fade_show, led_fade_store);
 static DEVICE_ATTR(led_fade_time_up, 0660, led_fade_time_up_show, led_fade_time_up_store);
 static DEVICE_ATTR(led_fade_time_down, 0660, led_fade_time_down_show, led_fade_time_down_store);
