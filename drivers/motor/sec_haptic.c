@@ -627,6 +627,8 @@ extern int haptic_homekey_press(void)
 
 	mutex_lock(&ddata->mutex);
 	ddata->timeout = HOMEKEY_DURATION;
+	sec_haptic_set_frequency(ddata, HOMEKEY_PRESS_FREQ);
+	sec_haptic_set_intensity(ddata, ddata->force_touch_intensity);
 	sec_haptic_enable(ddata, true);
 
 	pr_info("%s freq:%d, intensity:%d, time:%d\n", __func__,
@@ -651,6 +653,8 @@ extern int haptic_homekey_release(void)
 
 	mutex_lock(&ddata->mutex);
 	ddata->timeout = HOMEKEY_DURATION;
+	sec_haptic_set_frequency(ddata, HOMEKEY_RELEASE_FREQ);
+	sec_haptic_set_intensity(ddata, ddata->force_touch_intensity);
 	sec_haptic_enable(ddata, true);
 
 	pr_info("%s freq:%d, intensity:%d, time:%d\n", __func__,
