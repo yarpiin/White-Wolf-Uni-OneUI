@@ -395,11 +395,13 @@ static int gpu_dvfs_update_asv_table(struct kbase_device *kbdev)
 	for (i = 0; i < cal_get_dvfs_lv_num; i++) {
 		cal_freq = g3d_rate_volt[i].rate;
 		cal_vol = g3d_rate_volt[i].volt;
-		if (cal_freq <= platform->gpu_max_clock && cal_freq >= platform->gpu_min_clock) {
+		if (cal_freq <= platform->gpu_max_clock_limit && cal_freq >= platform->gpu_min_clock) {
 			for (j = 0; j < dvfs_table_row_num; j++) {
 				table_idx = j * dvfs_table_col_num;
 				// Compare cal_freq with DVFS table freq
 				if (cal_freq == of_data_int_array[table_idx]) {
+					if (!cal_vol)
+						cal_vol = platform->gpu_default_vol;
 					dvfs_table[j].clock = cal_freq;
 					dvfs_table[j].voltage = cal_vol;
 					dvfs_table[j].min_threshold = of_data_int_array[table_idx+1];
@@ -464,7 +466,7 @@ static int gpu_context_init(struct kbase_device *kbdev)
 #endif
 
 	core_props = &(kbdev->gpu_props.props.core_props);
-	core_props->gpu_freq_khz_max = platform->gpu_max_clock * 1000;
+	core_props->gpu_freq_khz_max = platform->gpu_max_clock;
 
 #if MALI_SEC_PROBE_TEST != 1
 	kbdev->vendor_callbacks = (struct kbase_vendor_callbacks *)gpu_get_callbacks();
