@@ -1,6 +1,26 @@
 
 Project name: White-Wolf-Uni-LOS
 
+02/07/2020
+
+  * version 22
+  * Revert "sched/fair: skip frequency updates if CPU about to idle" (Joel Fernandes) [e40a69fe6380]
+  * Revert "sched/fair: Fix issue where frequency update not skipped" (Joel Fernandes) [14458c53aaf0]
+  * exynos9810: dts: we have four fast cpus (Slawek) [7533e1cf33e3]
+  * exynos-hotplug: allow  userspace to set triple usermode (Slawek) [84836a4ff44a]
+  * defconfig: enable IP_NF_TARGET_TTL (Slawek) [fbe7288ebe13]
+  * locking/atomics, asm-generic/bitops/atomic.h: Rewrite using atomic_*() APIs (Will Deacon) [d263757f9723]
+  * tcp_cubic: fix spurious HYSTART_DELAY exit upon drop in min RTT (Neal Cardwell) [dee3e638c43c]
+  * drivers/cpufreq/cpufreq_governor.c needs the LATENCY_MULTIPLIER define (Ian Macdonald) [56574364175d]
+  * scripts: don't append "+" to localversion (Sultan Alsawaf) [49c469028b09]
+  * input: touchscreen: Require low latency (Siarhei Vishniakou) [c9da98240e62]
+  * input: Remove PM QoS latency request (Diep Quynh) [c87e224c4d44]
+  * sched: correct definition of dirty_sched_domain_sysctl (Jesse Chan) [b34c3abfc72a]
+  * Makefile: clang: explicitly call -no-integrated-as (Jesse Chan) [64153f9302f1]
+  * arm64: cpu_errata: include required headers (Arnd Bergmann) [99e0e5432dd8]
+  * kernel: Update stock config for /proc/config.gz (Slawek) [7210c8d324a3]
+  * crownlte: disable sec debug (Slawek) [a9ec3c3d2353]
+
 24/06/2020
 
   * version 21 (Slawek) [f164efc0caed]
