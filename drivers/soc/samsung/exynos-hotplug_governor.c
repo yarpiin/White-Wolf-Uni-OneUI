@@ -199,6 +199,8 @@ static unsigned long get_hpgov_maxfreq(void)
 		max_freq = exynos_hpgov.maxfreq_table[SINGLE];
 	else if (cpumask_weight(&exynos_hpgov.big_cpu_mask) == DUAL)
 		max_freq = exynos_hpgov.maxfreq_table[DUAL];
+	else if (cpumask_weight(&exynos_hpgov.big_cpu_mask) == TRIPLE)
+		max_freq = exynos_hpgov.maxfreq_table[TRIPLE];
 	else
 		max_freq = exynos_hpgov.maxfreq_table[QUAD];
 
@@ -842,6 +844,8 @@ static int exynos_hpgov_set_user_mode(int val)
 		exynos_hpgov.user_mode = DISABLE;
 	else if (val == QUAD)
 		exynos_hpgov.user_mode = QUAD;
+	else if (val == TRIPLE)
+		exynos_hpgov.user_mode = TRIPLE;
 	else if (val == DUAL)
 		exynos_hpgov.user_mode = DUAL;
 	else if (val == SINGLE)
