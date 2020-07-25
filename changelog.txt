@@ -1,6 +1,12 @@
 
 Project name: White-Wolf-Uni-LOS
 
+25/07/2020
+
+  * version 23
+  * sched/util_est: Fix util_est_dequeue() for throttled cfs_rq (Vincent Guittot) [857acbea572a]
+  * Import G96XFXXUAETG3 OSRC (Slawek) [0040d9850bda]
+
 02/07/2020
 
   * version 22
