@@ -1,6 +1,12 @@
 
 Project name: White-Wolf-Uni-LOS
 
+11/11/2020
+
+  * version 25
+  * Import N960FXXU6FTJ3 OSRC (Slawek) [f78c2c043]
+  * Import G96XFXXUCFTJ2 OSRC (Slawek) [d29e01c6a]
+
 23/09/2020
 
   * version 24
