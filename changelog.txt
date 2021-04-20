@@ -1,6 +1,11 @@
 
 Project name: White-Wolf-Uni-LOS
 
+01/03/2021
+
+  * version 26
+  * Import G96XFXXUCFTK1 OSRC (yarpiin) [e1609d6a7]
+
 11/11/2020
 
   * version 25
