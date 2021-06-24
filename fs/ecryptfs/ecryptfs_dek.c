@@ -372,7 +372,7 @@ static int ecryptfs_update_crypt_flag(struct dentry *dentry, enum sdp_op operati
     if (list_empty(&crypt_stat->keysig_list))
 	ecryptfs_dek_copy_mount_wide_sigs_to_inode_sigs(crypt_stat, mount_crypt_stat);
 
-	mutex_lock(&crypt_stat->cs_mutex);
+    mutex_lock(&crypt_stat->cs_mutex);
 	rc = ecryptfs_get_lower_file(dentry, inode);
 	if (rc) {
 		mutex_unlock(&crypt_stat->cs_mutex);
