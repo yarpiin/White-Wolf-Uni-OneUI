@@ -63,7 +63,7 @@ function clean_all {
 
 function make_star_kernel {
 		echo
-        export LOCALVERSION=-`echo $STAR_VER$YARPIIN_VER`
+        export LOCALVERSION=-`echo $STAR_VER$YARPIIN_PERM_VER`
         make O=out ARCH=arm64 $STARDEFCONFIG
 
         PATH="/home/yarpiin/Android/Toolchains/google-clang/bin:/home/yarpiin/Android/Toolchains/google-gcc/bin:${PATH}" \
@@ -79,7 +79,7 @@ function make_star_kernel {
 
 function make_star2_kernel {
 		echo
-        export LOCALVERSION=-`echo $STAR2_VER$YARPIIN_VER`
+        export LOCALVERSION=-`echo $STAR2_VER$YARPIIN_PERM_VER`
         make O=out ARCH=arm64 $STAR2DEFCONFIG
 
         PATH="/home/yarpiin/Android/Toolchains/google-clang/bin:/home/yarpiin/Android/Toolchains/google-gcc/bin:${PATH}" \
@@ -95,7 +95,7 @@ function make_star2_kernel {
 
 function make_crown_kernel {
 		echo
-        export LOCALVERSION=-`echo $CROWN_VER$YARPIIN_VER`
+        export LOCALVERSION=-`echo $CROWN_VER$YARPIIN_PERM_VER`
         make O=out ARCH=arm64 $CROWNDEFCONFIG
 
         PATH="/home/yarpiin/Android/Toolchains/google-clang/bin:/home/yarpiin/Android/Toolchains/google-gcc/bin:${PATH}" \
@@ -112,7 +112,7 @@ function make_crown_kernel {
 function make_perm_star_kernel {
 		echo
         export LOCALVERSION=-`echo $STAR_VER$YARPIIN_PERM_VER`
-		make $PERM_STARDEFCONFIG
+		make $STARDEFCONFIG
 		make $THREAD
 		cp -vr $ZIMAGE_DIR/$KERNEL $KERNELFLASHER_DIR/kernel/G960/zImage
         cp -vr $ZIMAGE_DIR/$DTBIMAGE $KERNELFLASHER_DIR/kernel/G960/zImage-dtb
@@ -121,7 +121,7 @@ function make_perm_star_kernel {
 function make_perm_star2_kernel {
 		echo
         export LOCALVERSION=-`echo $STAR2_VER$YARPIIN_PERM_VER`
-		make $PERM_STAR2DEFCONFIG
+		make $STAR2DEFCONFIG
 		make $THREAD
 		cp -vr $ZIMAGE_DIR/$KERNEL $KERNELFLASHER_DIR/kernel/G965/zImage
         cp -vr $ZIMAGE_DIR/$DTBIMAGE $KERNELFLASHER_DIR/kernel/G965/zImage-dtb
@@ -130,7 +130,7 @@ function make_perm_star2_kernel {
 function make_perm_crown_kernel {
 		echo
         export LOCALVERSION=-`echo $CROWN_VER$YARPIIN_PERM_VER`
-		make $PERM_CROWNDEFCONFIG
+		make $CROWNDEFCONFIG
 		make $THREAD
 		cp -vr $ZIMAGE_DIR/$KERNEL $KERNELFLASHER_DIR/kernel/N960/zImage
         cp -vr $ZIMAGE_DIR/$DTBIMAGE $KERNELFLASHER_DIR/kernel/N960/zImage-dtb
@@ -297,7 +297,7 @@ while read -p "Do you want to zip kernel (y/n)? " dchoice
 do
 case "$dchoice" in
 	y|Y)
-		make_zip
+		make_perm_zip
 		break
 		;;
 	n|N )
