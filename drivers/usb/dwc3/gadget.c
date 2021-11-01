@@ -265,7 +265,6 @@ void dwc3_gadget_giveback(struct dwc3_ep *dep, struct dwc3_request *req,
 	/* Only delete from the list if the item isn't poisoned. */
 	if (req->list.next != LIST_POISON1)
 		list_del(&req->list);
-	req->trb = NULL;
 
 	if (req->request.status == -EINPROGRESS)
 		req->request.status = status;
@@ -280,8 +279,11 @@ void dwc3_gadget_giveback(struct dwc3_ep *dep, struct dwc3_request *req,
 		dwc->ep0_bounced = false;
 		unmap_after_complete = true;
 	} else {
-		usb_gadget_unmap_request(&dwc->gadget,
+		if (req->trb) {
+			usb_gadget_unmap_request(&dwc->gadget,
 				&req->request, req->direction);
+			req->trb = NULL;
+		}
 	}
 
 	trace_dwc3_gadget_giveback(req);
@@ -290,9 +292,11 @@ void dwc3_gadget_giveback(struct dwc3_ep *dep, struct dwc3_request *req,
 	usb_gadget_giveback_request(&dep->endpoint, &req->request);
 	spin_lock(&dwc->lock);
 
-	if (unmap_after_complete)
+	if (unmap_after_complete && req->trb) {
 		usb_gadget_unmap_request(&dwc->gadget,
 				&req->request, req->direction);
+		req->trb = NULL;
+	}
 
 	if (dep->number > 1)
 		pm_runtime_put(dwc->dev);
@@ -2093,7 +2097,10 @@ static int dwc3_gadget_start(struct usb_gadget *g,
 	unsigned long		flags;
 	int			ret = 0;
 	int			irq;
+	struct dwc3_otg *dotg = dwc->dotg;
+	struct otg_fsm	*fsm = &dotg->fsm;
 
+	mutex_lock(&fsm->lock);
 	irq = dwc->irq_gadget;
 #if IS_ENABLED(DWC3_GADGET_IRQ_ORG)
 	ret = request_threaded_irq(irq, dwc3_interrupt, dwc3_thread_interrupt,
@@ -2120,6 +2127,7 @@ static int dwc3_gadget_start(struct usb_gadget *g,
 	dwc->gadget_driver	= driver;
 
 	spin_unlock_irqrestore(&dwc->lock, flags);
+	mutex_unlock(&fsm->lock);
 
 #ifdef CONFIG_ARGOS
 	if (!zalloc_cpumask_var(&affinity_cpu_mask, GFP_KERNEL))
@@ -2138,6 +2146,7 @@ err1:
 	free_irq(irq, dwc);
 
 err0:
+	mutex_unlock(&fsm->lock);
 	return ret;
 }
 
@@ -2156,10 +2165,30 @@ static int dwc3_gadget_stop(struct usb_gadget *g)
 	struct dwc3		*dwc = gadget_to_dwc(g);
 	unsigned long		flags;
 
+	struct dwc3_otg *dotg = dwc->dotg;
+	struct otg_fsm	*fsm = &dotg->fsm;
+
+	mutex_lock(&fsm->lock);
 	spin_lock_irqsave(&dwc->lock, flags);
+
+	if (pm_runtime_suspended(dwc->dev))
+		goto out;
+
+	if (!dwc->vbus_session) {
+		pr_info("%s, runtime_stat %d, disable_depth %d\n",
+			__func__, dwc->dev->power.runtime_status,
+			dwc->dev->power.disable_depth);
+		pr_info("%s, vbus is off. Return!\n", __func__);
+		/* Need to wait for vbus_session(on) from otg driver */
+		goto out;
+	}
+
 	__dwc3_gadget_stop(dwc);
+
+out:
 	dwc->gadget_driver	= NULL;
 	spin_unlock_irqrestore(&dwc->lock, flags);
+	mutex_unlock(&fsm->lock);
 
 	free_irq(dwc->irq_gadget, dwc->ev_buf);
 
