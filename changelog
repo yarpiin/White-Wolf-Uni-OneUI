@@ -1,0 +1,438 @@
+
+n.n.n / 2022-05-03
+==================
+
+  * White Wolf SE version 2
+  * defconfig: Adjust net configs
+  * cfg80211: Add support for randomizing TA of Public Action  frames Add support to use a random local address (Address 2 = TA in transmit  and the same address in receive functionality) for Public Action frames in  order to improve privacy of WLAN clients. Applications fill the random  transmit address in the frame buffer in the NL80211_CMD_FRAME command. This  can be used only with the drivers that indicate support for random local  address by setting the new NL80211_EXT_FEATURE_MGMT_TX_RANDOM_TA and/or  NL80211_EXT_FEATURE_MGMT_TX_RANDOM_TA_CONNECTED in ext_features.
+  * cfg80211: Add feature flag for Fast Initial Link Setup (FILS)  as STA This defines a feature flag that drivers can use to indicate that they  support FILS authentication/association (IEEE 802.11ai) when using user space  SME (NL80211_CMD_AUTHENTICATE) in station mode.
+  * defconfig: regen
+  * ANDROID: Remove xt_oneshot module from new kernels.
+  * ANDROID: Remove xt_qtaguid module from new kernels.
+  * upstream: Fix CVE-2019-8912
+  * Treewide: fix misleading indentation; statement is not part of the previous 'if' [-Werror,-Wmisleading-indentation]
+  * gpu: mali: port r37p0 and add adaptive power policy to gpu
+  * gpu: mali: port r36p0
+  * gpu: mali: bv_r35p0: Add adaptive power policy Adds a new power policy 'adaptive' based off 'coarse_demand'. The main difference is that while coarse_demand has a static power off hysteresis (i.e. the amount of time after the GPU goes idle that the platform idle callback is made), adaptive scales this up and down depending on the workload.
+  * dts: force native resolution to fix google maps
+  * defconfig: enable mali/r35p0
+  * mali/r35p0: update headers
+  * mali/r35p0: Add Samsung changes
+  * drivers:gpu: Add Mali bifrost r35p0
+  * defconfig: enable zram
+  * UPSTREAM: zsmalloc: introduce zs_huge_class_size()
+  * zram: set default compressor to lz4
+  * ANDROID: zram: fix incorrect assignment for access time
+  * UPSTREAM: zram: idle writeback fixes and cleanup
+  * UPSTREAM: zram: writeback throttle
+  * UPSTREAM: zram: add bd_stat statistics
+  * BACKPORT: zram: support idle/huge page writeback
+  * UPSTREAM: zram: introduce ZRAM_IDLE flag
+  * BACKPORT: zram: refactor flags and writeback stuff
+  * UPSTREAM: zram: fix double free backing device
+  * UPSTREAM: zram: fix lockdep warning of free block handling
+  * zram: close udev startup race condition as default groups
+  * ANDROID: zram: set comp_len to PAGE_SIZE when page is huge
+  * BACKPORT: zram: drop max_zpage_size and use zs_huge_class_size()
+  * UPSTREAM: drivers/block/zram/zram_drv.c: fix bug storing backing_dev
+  * BACKPORT: zram: introduce zram memory tracking
+  * BACKPORT: zram: record accessed second
+  * BACKPORT: zram: mark incompressible page as ZRAM_HUGE
+  * UPSTREAM: zram: correct flag name of ZRAM_ACCESS
+  * UPSTREAM: zram: Delete gendisk before cleaning up the request queue
+  * UPSTREAM: drivers/block/zram/zram_drv.c: make zram_page_end_io() static
+  * BACKPORT: zram: set BDI_CAP_STABLE_WRITES once
+  * UPSTREAM: zram: fix null dereference of handle
+  * UPSTREAM: zram: add config and doc file for writeback feature
+  * UPSTREAM: zram: read page from backing device
+  * UPSTREAM: zram: write incompressible pages to backing device
+  * UPSTREAM: zram: identify asynchronous IO's return value
+  * BACKPORT: zram: add free space management in backing device
+  * UPSTREAM: zram: add interface to specif backing device
+  * UPSTREAM: zram: rename zram_decompress_page to __zram_bvec_read
+  * UPSTREAM: zram: inline zram_compress
+  * UPSTREAM: zram: clean up duplicated codes in __zram_bvec_write
+  * UPSTREAM: zram: add zstd to the supported algorithms list
+  * UPSTREAM: zram: rework copy of compressor name in comp_algorithm_store()
+  * UPSTREAM: zram: constify attribute_group structures.
+  * UPSTREAM: zram: count same page write as page_stored
+  * UPSTREAM: zram: reduce load operation in page_same_filled
+  * UPSTREAM: zram: use zram_free_page instead of open-coded
+  * UPSTREAM: zram: introduce zram data accessor
+  * UPSTREAM: zram: remove zram_meta structure
+  * UPSTREAM: zram: use zram_slot_lock instead of raw bit_spin_lock op
+  * UPSTREAM: zram: partial IO refactoring
+  * BACKPORT: zram: handle multiple pages attached bio's bvec
+  * UPSTREAM: zram: fix operator precedence to get offset
+  * BACKPORT: zram: extend zero pages to same element pages
+  * UPSTREAM: zram: remove waitqueue for IO done
+  * UPSTREAM: zram: remove obsolete sysfs attrs
+  * Merge remote-tracking branch 'stock/master'
+  * Import G96XFXXUGFUH3 OSRC
+  * Import N960FXXU9FUH4 OSRC
+  * build : ww se and eol
+  * defconfig: enable new gpu driver
+  * gpu: mali: r26p0: read freq voltage from device tree if empty
+  * gpu: mali: r26p0: port G96xFXXUFFUD5 r19p0 changes
+  * gpu: mali: r26p0: fix 'too many arguments for format [-Werror=format-extra-args]'
+  * gpu: mali: r26p0: fix kconfig
+  * gpu: mali: add R26P0 from N770FXXU7EUB3
+  * build: build permissive for android 11
+  * selinux: force permissive
+  * selinux: remove ALWAYS_ENFORCE
+  * version 26
+  * Import G96XFXXUCFTK1 OSRC
+  * Import G96XFXXUCFTK1 OSRC
+  * update gitignore
+  * security: five: fix compilation
+  * version 25
+  * Merge remote-tracking branch 'android_kernel_samsung_universal9810/master'
+  * Import N960FXXU6FTJ3 OSRC
+  * Import G96XFXXUCFTJ2 OSRC
+  * version 24
+  * defconfig: KEEP MPTCP DISABLED !!!
+  * defconfig: set hide magisk mounts
+  * HACK: fs/proc: block access to mounts for "IsolatedService"
+  * fs/proc: hide magisk mounts for IsolatedService
+  * PM/Sleep: Start killing wakelocks after two minutes of idle (120s)
+  * sched/fair: Make scheduling period more efficient
+  * ANDROID: sched/fair: initialise util_est values to 0 on fork
+  * drivers: ssp_debug: Suppress SSP log spam
+  * scripts/genksyms: add missing include for UINT8_MAX + UINT16_MAX
+  * version 23
+  * sched/util_est: Fix util_est_dequeue() for throttled cfs_rq
+  * Import G96XFXXUAETG3 OSRC
+  * Import G96XFXXUAETG3 OSRC
+  * version 22
+  * Revert "sched/fair: skip frequency updates if CPU about to idle"
+  * Revert "sched/fair: Fix issue where frequency update not skipped"
+  * exynos9810: dts: we have four fast cpus
+  * exynos-hotplug: allow  userspace to set triple usermode
+  * defconfig: enable IP_NF_TARGET_TTL
+  * locking/atomics, asm-generic/bitops/atomic.h: Rewrite using atomic_*() APIs
+  * tcp_cubic: fix spurious HYSTART_DELAY exit upon drop in min RTT
+  * drivers/cpufreq/cpufreq_governor.c needs the LATENCY_MULTIPLIER define
+  * scripts: don't append "+" to localversion
+  * input: touchscreen: Require low latency
+  * input: Remove PM QoS latency request
+  * sched: correct definition of dirty_sched_domain_sysctl
+  * Makefile: clang: explicitly call -no-integrated-as
+  * arm64: cpu_errata: include required headers
+  * kernel: Update stock config for /proc/config.gz
+  * crownlte: disable sec debug
+  * version 21
+  * treewide: fix clang compilation
+  * f2fs: fix double definition
+  * defconfig: enable f2fs support
+  * defconfig: block unwanted files
+  * fs: open: do not block /system/etc/ path
+  * fs: block vulmax Another retarded ai optimiser
+  * fs: expand blocker to cover FDE.AI apps
+  * fs: block MAGNETAR
+  * fs: add a /system/ path to file blocker
+  * fs: add a simplified file blocker
+  * add yarpiin build stuff
+  * AIO: Don't plug the I/O queue in do_io_submit()
+  * binfmt_elf.c: use get_random_int() to fix entropy depleting
+  * mm: slub: Default slub_max_order to 0
+  * tcp_output: set initial TCP window size to 64K (speed improvement)
+  * sched/fair: Fix issue where frequency update not skipped
+  * sched/fair: skip frequency updates if CPU about to idle
+  * exynos9810: oc
+  * drivers/net/wireless/bcmdhd_100_10: nuke
+  * Silences WLAN, PCIe, and CPU suspend state kernel messages
+  * binder: disable logging
+  * cpu: Silence log spam when a CPU is brought up
+  * lowmemorykiller: reduce debug level
+  * Silence workqueue
+  * defconfig: enable gestures
+  * wake_gestures: sweep2wake, doubletap2wake and sweep2sleep for Samsung Galaxy S9
+  * mm: Change max readahead size to 64 KiB
+  * input: Get rid of all input boosters
+  * drivers: read gpu max_clock_limit from device tree
+  * exynos: gpu: r19p0: OC to 598MHz
+  * sec_haptic: Don’t change haptic freq and intensity
+  * Optimized Console FrameBuffer for upto 70% increase in Performance
+  * arm64: lib: memory utilities optimization
+  * UPSTREAM: sched/fair/util_est: Implement faster ramp-up EWMA on utilization increases
+  * defconfig: use flat memory model
+  * arm64: make flatmem depend on !NUMA
+  * arm64: add ARM64-specific support for flatmem
+  * arm64: strcmp: align to 64B cache line
+  * defconfig: update
+  * net/wireguard: add wireguard importer
+  * defconfig: enable SchedutilX
+  * sched: schedutilX: Add slack_timer and pm_qos handler
+  * sched: su_gov: remove DL initial flag when starting governor
+  * cpufreq: schedutilX: reduce up rate limit
+  * cpufreq: schedutilX: Don't skip freq update when limits change
+  * schedutilX: hardcode up and down rates
+  * cpufreq: schedutilX: Introduce initial bringup
+  * defconfig: update
+  * kernel: Boost all CPUs to the max when userspace launches an app
+  * cpu_input_boost: Boost priority of notifier_block
+  * cpu_input_boost: Clean up code style and update license header
+  * cpu_input_boost: make the userspace module param vars static
+  * cpu_input_boost: expose input freqs and duration to userspace
+  * cpu_input_boost: Eliminate spin lock by using atomic cmpxchg loop
+  * cpu_input_boost: Simplify bitwise operations used to store boost state
+  * cpu_input_boost: Destroy workqueue on error path in init
+  * cpu_input_boost: Fix and refactor max boost logic
+  * cpu_input_boost: Add API for boosting all CPUs to max frequency
+  * cpu_input_boost: Introduce driver for event-based CPU boosting
+  * kernel: keep the cpumasks for cpu_input_boost
+  * mdnie: override RGB
+  * Never call max77705_rgb_ramp() when led_enable_fade disabled.
+  * Multiple bug fixes to LED fader implementation:
+  * LED fade: fix sysfs entry
+  * Adaptation: max77705: fade led Adaptation from Ktoonsez and @Noxxxious
+  * defconfig: update
+  * sched/fair: Migration hysteresis filter from HiSilicon EAS
+  * UPSTREAM: cpufreq: schedutil: use now as reference when aggregating shared policy requests
+  * sched/fair: Update util_est before updating schedutil
+  * sched: rt & fair_hmp: Update load averages based on new PELT decay rates.
+  * sched: ehmp: Update load averages based on new PELT decay rates
+  * sched: ehmp: Make the ontime migrations hooks a sched feature
+  * sched: sync ehmp with new WALT and PELT changes
+  * BACKPORT: sched/fair: Add support to tune PELT ramp/decay timings
+  * sched/fair: Fix corner case in __accumulate_sum()
+  * sched/fair: Optimize ___update_sched_avg()
+  * sched/fair: use *p to reference task_structs
+  * sched: EAS: Fix the calculation of group util in group_idle_state()
+  * sched/deadline: Use deadline instead of period when calculating overflow
+  * sched/deadline: Throttle a constrained deadline task activated after the deadline
+  * sched/deadline: Make sure the replenishment timer fires in the next period
+  * sched/deadline: Add missing update_rq_clock() in dl_task_timer()
+  * sched/rt: Do not pull from current CPU if only one CPU to pull
+  * sched/fair: Make select_idle_cpu() more aggressive
+  * BACKPORT: schedutil: Reset cached freq if it is not in sync with next_freq
+  * sched: EAS/WALT: Don't take into account of running task's util
+  * sched: EAS/WALT: take into account of waking task's load
+  * sched: EAS: upmigrate misfit current task
+  * sched: avoid pushing tasks to an offline CPU
+  * sched: Extend active balance to accept 'push_task' argument
+  * sched: walt: Correct WALT window size initialization
+  * sched: WALT: account cumulative window demand
+  * sched: EAS/WALT: finish accounting prior to task_tick
+  * sched/fair: prevent meaningless active migration
+  * sched: walt: Leverage existing helper APIs to apply invariance
+  * sched/rt: Simplify the IPI based RT balancing logic
+  * sched: Make resched_cpu() unconditional
+  * sched/core: Add missing update_rq_clock() call in sched_move_task()
+  * sched: WALT: fix potential overflow
+  * sched: Update task->on_rq when tasks are moving between runqueues
+  * sched: EAS: kill incorrect nohz idle cpu kick
+  * sched: EAS: fix incorrect energy delta calculation due to rounding error
+  * sched: EAS/WALT: use cr_avg instead of prev_runnable_sum
+  * sched: WALT: fix broken cumulative runnable average accounting
+  * sched: deadline: WALT: account cumulative runnable avg
+  * sched: compute task utilisation with WALT consistently
+  * cpufreq: Drop schedfreq governor
+  * sched: EAS: Fix the condition to distinguish energy before/after
+  * sched: EAS: update trg_cpu to backup_cpu if no energy saving for target_cpu
+  * sched/fair: consider task utilization in group_max_util()
+  * sched/fair: consider task utilization in group_norm_util()
+  * sched/fair: enforce EAS mode
+  * sched/fair: ignore backup CPU when not valid
+  * sched/fair: trace energy_diff for non boosted tasks
+  * UPSTREAM: sched/fair: Sync task util before slow-path wakeup
+  * UPSTREAM: sched/core: Add missing update_rq_clock() call in set_user_nice()
+  * UPSTREAM: sched/core: Add missing update_rq_clock() call for task_hot()
+  * UPSTREAM: sched/core: Add missing update_rq_clock() in detach_task_cfs_rq()
+  * UPSTREAM: sched/core: Add missing update_rq_clock() in post_init_entity_util_avg()
+  * UPSTREAM: sched/fair: Fix task group initialization
+  * cpufreq/sched: Consider max cpu capacity when choosing frequencies
+  * cpufreq/sched: Use cpu max freq rather than policy max
+  * sched/fair: remove erroneous RCU_LOCKDEP_WARN from start_cpu()
+  * ANDROID: sched/walt: Fix divide by zero error in cpufreq notifier
+  * ANDROID: sched/fair: Select correct capacity state for energy_diff
+  * BACKPORT: cpufreq: schedutil: Use policy-dependent transition delays
+  * UPSTREAM: sched/fair: Fix usage of find_idlest_group() when the local group is idlest
+  * UPSTREAM: sched/fair: Fix usage of find_idlest_group() when no groups are allowed
+  * UPSTREAM: sched/fair: Fix find_idlest_group() when local group is not allowed
+  * UPSTREAM: sched/fair: Remove unnecessary comparison with -1
+  * UPSTREAM: sched/fair: Move select_task_rq_fair() slow-path into its own function
+  * UPSTREAM: sched/fair: Force balancing on NOHZ balance if local group has capacity
+  * UPSTREAM: sched: use load_avg for selecting idlest group
+  * UPSTREAM: sched: fix find_idlest_group for fork
+  * UPSTREAM: sched/fair: Consider spare capacity in find_idlest_group()
+  * UPSTREAM: sched/fair: Fix FTQ noise bench regression
+  * sched/fair: Update util_est only on util_avg updates
+  * sched/cpufreq/schedutil: Use util_est for OPP selection
+  * sched/fair: Use util_est in LB and WU paths
+  * sched/fair: Add util_est on top of PELT
+  * cpufreq: Kconfig: Make FREQVAR_TUNE as an option
+  * proc: Remove additional SafetyNet flags from /proc/cmdline
+  * proc: Remove verifiedbootstate flag from /proc/cmdline
+  * staging/android: Fix ion.c when disabling ION_EXYNOS_STAT_LOG
+  * drivers/input: Fix build when CONFIG_SEC_DEBUG_TSP_LOG unset
+  * add gitignore
+  * kernel: Use the stock config for /proc/config.gz
+  * defconfig: enable EXYNOS_DTBTOOL
+  * EXYNOS_DTBTOOL: introduce to the Linux build system
+  * ologk.h: no
+  * lib/string.c: implement a basic bcmp
+  * fbdev: decon_core: Fix build when CONFIG_DECON_EVENT_LOG is unset
+  * Fix build when CONFIG_DECON_EVENT_LOG is unset.
+  * usb: modify mass_storage gadget to work with configfs
+  * sec_ts_fn: y771: fix logical-not-parentheses warning
+  * drivers: touchscreen: y771: fix strncat-size warnings
+  * net: dhd_common: fix comparing a pointer to a null character
+  * net: wl_android: fix clang overlap-compare warning
+  * media: fimc-is-sysfs: Silence an instance of -Wsizeof-array-div in SsrmCameraInfo
+  * bcmdhd_100_15: Suppress unused variable warnings
+  * exynos-hotplug_governor: Fix return of get_cl_group
+  * cal-if: Short casting for PLL_RATE_MPSK
+  * drivers: usb: silence enum-conversion warnings
+  * decon_reg: silence literal conversion warning
+  * decon: merge all into decon_data_path
+  * decon_core: fix parentheses-equality warning
+  * usb: remove tizen if function
+  * sti: abc: Fix null conversion warn
+  * vision: iva: Drop redefinition of rt_iva_table
+  * usb: dwc3: Use psy_do_property
+  * ion: exynos: Suppress logical with constant operand warn
+  * trace: exynos-ss: Drop redefinition of ess_initcall_t
+  * sec_debug: silence null-dereference warnings
+  * ufs-exynos: don't use boolean statement in switch-case
+  * scsi: sd: Drop pointer check from if
+  * sensorhub: bbdpl: Drop redefinition of types
+  * gator: Use global_node_page_state for NR_FILE_PAGES
+  * gator: Fix macro definitions
+  * fimc-is2: introduce DMA_INPUT_ORDER_NO order
+  * s5p_mfc_[dec/enc]_ops: fix parentheses-equality warnings
+  * [COMMON] fimc-is2: fix a typo (SYNNY -> SUNNY)
+  * drivers: touchscreen: fix strncat-size warnings
+  * sec_ts_fn: fix logical-not-parentheses warning
+  * [cpu/gpu]_cooling: move get_static_t declaration in thermal.h
+  * codecs: max98512: Drop always true pointer if
+  * gpu: exynos: g2d: Fix typo in header guard
+  * crypto: fmp: silence unknown attribute optimize warning
+  * ccic: silence enum conversion warning
+  * battery_v2: silence enum conversion warning
+  * crypto: Remove -fno-merge-constants
+  * decon_reg: silence literal conversion warning
+  * mfc: silence enum conversion warning
+  * ANDROID: xt_qtaguid: Remove unnecessary null checks to device's name
+  * soc: samsung: cal-if: add volatile keyword to prevent optimization by clang
+  * dpu: Update aux interval function
+  * mptcp: disable incompatible-pointer-types warnings
+  * cal-if: disable sizeof-pointer-div warnings
+  * decon: merge all into decon_data_path
+  * drivers: thermal: silence enum-conversion warnings
+  * drivers: fimc-is2: silence enum-conversion warnings
+  * s5p_mfc_enc_internal: replace min/max value to fix shift-overflow warning
+  * drivers: modem_v1: silence logical-not-parentheses warning
+  * drivers: modem_v1: silence enum-conversion warnings
+  * drivers: vfs8xxx: silence enum-conversion warning
+  * decon_core: fix parentheses-equality warning
+  * ufshcd: fix parentheses-equality warning
+  * fs: ecryptfs: fix parentheses-equality warning
+  * arm64: percpu: Initialize ret in the default case
+  * phonet: fix building with clang
+  * mm/zsmalloc.c: fix -Wunneeded-internal-declaration warning
+  * mm/zsmalloc.c: change stat type parameter to int
+  * kbuild: clang: choose GCC_TOOLCHAIN_DIR not on LD
+  * kbuild: allow to use GCC toolchain not in Clang search path
+  * scripts/setlocalversion: improve -dirty check
+  * kernel/sched: fix build when SCHED_DEBUG is unset
+  * fs/sdfat: fix build when SDFAT_DEBUG unset
+  * fs: sdfat: add MODULE_ALIAS_FS for supported filesystems
+  * fs: sdfat: add config option to register sdFAT for VFAT
+  * fs: sdfat: add config option to register sdFAT for exFAT
+  * drivers/mmc/core: expose software CRC check option to userspace
+  * drivers/bts: use cal_bts9810 definitions instead of cal_bts8895
+  * scripts/rkp_cfp: don't attempt to use ccache for instrumentation
+  * Merge remote-tracking branch 'universal9810/master'
+  * Makefile: export ANDROID_MAJOR_VERSION=q
+  * init: rename uh.8g.elf to uh.8g.elf.h to avoid getting ignored
+  * init: rename uh.elf to uh.elf.h to avoid getting ignored
+  * init: cope with uh.elf.h existing in $(srctree) not $(objtree)
+  * drivers: led: remove  LEDS_KTD2692 config
+  * net: fix build after knox disable
+  * defconfig: disable samsung security options
+  * dts: disable verify
+  * dts: makefile: relocate
+  * fs/sdcardfs: remove 'o' and 'p' directories
+  * import N960FXXU5ETF5 OSRC
+  * Merge remote-tracking branch 'origin/starlte'
+  * import G96XFXXU9ETF5 OSRC
+  * Initial commit
+#!/bin/bash
+
+
+#************************************************#
+#                                                #
+#                  Kernel                     #
+#              changelog generator               #
+#            modded by @anarkia1976              #
+#            written by @fusionjack              #
+#                                                #
+#************************************************#
+
+# colorize and add text parameters
+grn=$(tput setaf 2)             # green
+yellow=$(tput setaf 3)             # yellow
+bldgrn=${txtbld}$(tput setaf 2) # bold green
+red=$(tput setaf 1)             # red
+txtbld=$(tput bold)             # bold
+bldblu=${txtbld}$(tput setaf 4) # bold blue
+blu=$(tput setaf 4)             # blue
+txtrst=$(tput sgr0)             # reset
+blink=$(tput blink)             # blink
+
+# variables
+rdir=`pwd`
+CURRENT_DATE=`date +%Y%m%d`
+LAST_DATE=`date +%s -d "15 day ago"`
+CUSTOM_DATE="$1"
+
+clear
+
+echo -e "${bldgrn}"
+echo "                                                    ";
+echo "  Yarpiin Kernel               ";
+echo "                                                    ";
+echo -e "${txtrst}"
+
+# generate changelog
+echo -e "${blink}${bldblu} *** Generating Changelog ${txtrst}"; echo "";
+if [ -z "$CUSTOM_DATE" ]; then
+    if [ -z "$LAST_DATE" ]; then
+        WORKING_DATE=`date +%s "1 day ago"`
+    else
+        WORKING_DATE=${LAST_DATE}
+    fi
+else
+    WORKING_DATE=${CUSTOM_DATE}
+fi
+
+CHANGELOG=$rdir/changelog_${CURRENT_DATE}.txt
+
+# remove existing changelog
+file="$CHANGELOG"
+if [ -f "$file" ]; then
+    echo -e "${txtbld}${red} *** Removing Old Changelog${txtrst}"; echo"";
+    rm $CHANGELOG;
+fi
+
+# find the directories to log
+find $rdir -name .git | sed 's/\/.git//g' | sed 'N;$!P;$!D;$d' | while read line
+do
+    cd $line
+    # test to see if the repo needs to have a changelog written.
+    log=$((git log --pretty="* %s (%an) [%h]" --no-merges --since=$WORKING_DATE --date-order) | sed 's/\.git//')
+    project=$(git remote -v | grep -i origin | head -n1 | awk '{print $2}' | sed 's/.*\///' | sed 's/\.git//')
+    if [ ! -z "$log" ]; then
+        # write the changelog
+	echo -e "${txtbld}${yellow} *** Verify Changelog Status ${txtrst}";
+	echo -e "${grn}   ----> $project: is Updated ${txtrst}"; echo "";
+        echo "" >> $CHANGELOG;
+	echo "Project name: $project" >> $CHANGELOG;
+        echo "$log" | while read line
+        do
+		echo "  $line" >> $CHANGELOG
+        done
+        echo "" >> $CHANGELOG
+    fi
+done
