@@ -11,10 +11,31 @@
 
 
 menu "ARM GPU Configuration"
-if (SOC_EXYNOS8895)
-source "drivers/gpu/arm/tMIx/Kconfig"
+
+menuconfig MALI_THEX
+	tristate "Mali support"
+	default y
+	help
+	  Enable this option to build support for the ARM Mali-G72 GPU.
+
+	  To compile this driver as a module, choose M here:
+	  this will generate a single module, called mali_kbase.
+
+choice
+	prompt "version Configuration"
+	depends on MALI_THEX
+	default MALI_BIFROST_R35P0 if ANDROID_VERSION >= "100000"
+	help
+	  Select the gpu support version.
+
+config MALI_BIFROST_R35P0
+	depends on MALI_THEX
+	bool "Bifrost r35p0 driver for Android"
+
+endchoice
+
+if MALI_BIFROST_R35P0
+source "drivers/gpu/arm/b_r35p0/Kconfig"
 endif
-if (SOC_EXYNOS9810)
-source "drivers/gpu/arm/tHEx/Kconfig"
-endif
+
 endmenu

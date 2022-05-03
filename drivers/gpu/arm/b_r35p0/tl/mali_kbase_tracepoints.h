@@ -315,7 +315,6 @@ void __kbase_tlstream_tl_kbase_new_device(
 void __kbase_tlstream_tl_kbase_device_program_csg(
 	struct kbase_tlstream *stream,
 	u32 kbase_device_id,
-	u32 kernel_ctx_id,
 	u32 gpu_cmdq_grp_handle,
 	u32 kbase_device_csg_slot_index,
 	u32 kbase_device_csg_slot_resumed);
@@ -1697,7 +1696,7 @@ struct kbase_tlstream;
  *   New KBase Device
  *
  * @kbdev: Kbase device
- * @kbase_device_id: The ID of the physical hardware
+ * @kbase_device_id: The id of the physical hardware
  * @kbase_device_gpu_core_count: The number of gpu cores in the physical hardware
  * @kbase_device_max_num_csgs: The max number of CSGs the physical hardware supports
  * @kbase_device_as_count: The number of address spaces the physical hardware has available
@@ -1743,8 +1742,7 @@ struct kbase_tlstream;
  *   CSG is programmed to a slot
  *
  * @kbdev: Kbase device
- * @kbase_device_id: The ID of the physical hardware
- * @kernel_ctx_id: Unique ID for the KBase Context
+ * @kbase_device_id: The id of the physical hardware
  * @gpu_cmdq_grp_handle: GPU Command Queue Group handle which will match userspace
  * @kbase_device_csg_slot_index: The index of the slot in the scheduler being programmed
  * @kbase_device_csg_slot_resumed: Whether the csg is being resumed
@@ -1753,7 +1751,6 @@ struct kbase_tlstream;
 #define KBASE_TLSTREAM_TL_KBASE_DEVICE_PROGRAM_CSG(	\
 	kbdev,	\
 	kbase_device_id,	\
-	kernel_ctx_id,	\
 	gpu_cmdq_grp_handle,	\
 	kbase_device_csg_slot_index,	\
 	kbase_device_csg_slot_resumed	\
@@ -1763,13 +1760,12 @@ struct kbase_tlstream;
 		if (enabled & BASE_TLSTREAM_ENABLE_CSF_TRACEPOINTS)	\
 			__kbase_tlstream_tl_kbase_device_program_csg(	\
 				__TL_DISPATCH_STREAM(kbdev, obj),	\
-				kbase_device_id, kernel_ctx_id, gpu_cmdq_grp_handle, kbase_device_csg_slot_index, kbase_device_csg_slot_resumed);	\
+				kbase_device_id, gpu_cmdq_grp_handle, kbase_device_csg_slot_index, kbase_device_csg_slot_resumed);	\
 	} while (0)
 #else
 #define KBASE_TLSTREAM_TL_KBASE_DEVICE_PROGRAM_CSG(	\
 	kbdev,	\
 	kbase_device_id,	\
-	kernel_ctx_id,	\
 	gpu_cmdq_grp_handle,	\
 	kbase_device_csg_slot_index,	\
 	kbase_device_csg_slot_resumed	\
@@ -1782,7 +1778,7 @@ struct kbase_tlstream;
  *   CSG is deprogrammed from a slot
  *
  * @kbdev: Kbase device
- * @kbase_device_id: The ID of the physical hardware
+ * @kbase_device_id: The id of the physical hardware
  * @kbase_device_csg_slot_index: The index of the slot in the scheduler being programmed
  */
 #if MALI_USE_CSF
@@ -1834,7 +1830,7 @@ struct kbase_tlstream;
  *
  * @kbdev: Kbase device
  * @kernel_ctx_id: Unique ID for the KBase Context
- * @kbase_device_id: The ID of the physical hardware
+ * @kbase_device_id: The id of the physical hardware
  */
 #if MALI_USE_CSF
 #define KBASE_TLSTREAM_TL_KBASE_NEW_CTX(	\

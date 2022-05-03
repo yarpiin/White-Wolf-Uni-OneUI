@@ -322,8 +322,8 @@ enum tl_msg_id_aux {
 		"kbase_device_id,kbase_device_gpu_core_count,kbase_device_max_num_csgs,kbase_device_as_count,kbase_device_sb_entry_count,kbase_device_has_cross_stream_sync,kbase_device_supports_gpu_sleep") \
 	TRACEPOINT_DESC(KBASE_TL_KBASE_DEVICE_PROGRAM_CSG, \
 		"CSG is programmed to a slot", \
-		"@IIIII", \
-		"kbase_device_id,kernel_ctx_id,gpu_cmdq_grp_handle,kbase_device_csg_slot_index,kbase_device_csg_slot_resumed") \
+		"@IIII", \
+		"kbase_device_id,gpu_cmdq_grp_handle,kbase_device_csg_slot_index,kbase_device_csg_slot_resumed") \
 	TRACEPOINT_DESC(KBASE_TL_KBASE_DEVICE_DEPROGRAM_CSG, \
 		"CSG is deprogrammed from a slot", \
 		"@II", \
@@ -2118,7 +2118,6 @@ void __kbase_tlstream_tl_kbase_new_device(
 void __kbase_tlstream_tl_kbase_device_program_csg(
 	struct kbase_tlstream *stream,
 	u32 kbase_device_id,
-	u32 kernel_ctx_id,
 	u32 gpu_cmdq_grp_handle,
 	u32 kbase_device_csg_slot_index,
 	u32 kbase_device_csg_slot_resumed)
@@ -2126,7 +2125,6 @@ void __kbase_tlstream_tl_kbase_device_program_csg(
 	const u32 msg_id = KBASE_TL_KBASE_DEVICE_PROGRAM_CSG;
 	const size_t msg_size = sizeof(msg_id) + sizeof(u64)
 		+ sizeof(kbase_device_id)
-		+ sizeof(kernel_ctx_id)
 		+ sizeof(gpu_cmdq_grp_handle)
 		+ sizeof(kbase_device_csg_slot_index)
 		+ sizeof(kbase_device_csg_slot_resumed)
@@ -2141,8 +2139,6 @@ void __kbase_tlstream_tl_kbase_device_program_csg(
 	pos = kbasep_serialize_timestamp(buffer, pos);
 	pos = kbasep_serialize_bytes(buffer,
 		pos, &kbase_device_id, sizeof(kbase_device_id));
-	pos = kbasep_serialize_bytes(buffer,
-		pos, &kernel_ctx_id, sizeof(kernel_ctx_id));
 	pos = kbasep_serialize_bytes(buffer,
 		pos, &gpu_cmdq_grp_handle, sizeof(gpu_cmdq_grp_handle));
 	pos = kbasep_serialize_bytes(buffer,

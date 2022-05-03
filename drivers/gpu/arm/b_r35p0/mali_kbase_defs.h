@@ -107,12 +107,12 @@
 /**
  * Maximum size in bytes of a MMU lock region, as a logarithm
  */
-#define KBASE_LOCK_REGION_MAX_SIZE_LOG2 (48) /*  256 TB */
+#define KBASE_LOCK_REGION_MAX_SIZE_LOG2 (64)
 
 /**
  * Minimum size in bytes of a MMU lock region, as a logarithm
  */
-#define KBASE_LOCK_REGION_MIN_SIZE_LOG2 (15) /* 32 kB */
+#define KBASE_LOCK_REGION_MIN_SIZE_LOG2 (15)
 
 /**
  * Maximum number of GPU memory region zones
