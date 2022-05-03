@@ -31,7 +31,7 @@ TOOLCHAIN_DIR="/home/yarpiin/Android/Toolchains"
 
 # Kernel Details
 BASE_YARPIIN_VER="WHITE.WOLF.ONEUI.UNI"
-VER=".SE"
+VER=".SE.002"
 PERM=".PERM"
 YARPIIN_VER="$BASE_YARPIIN_VER$VER"
 YARPIIN_PERM_VER="$BASE_YARPIIN_VER$VER$PERM"
@@ -63,10 +63,10 @@ function clean_all {
 
 function make_star_kernel {
 		echo
-        export LOCALVERSION=-`echo $STAR_VER$YARPIIN_PERM_VER`
+        export LOCALVERSION=-`echo $STAR_VER$YARPIIN_VER`
         make O=out ARCH=arm64 $STARDEFCONFIG
 
-        PATH="/home/yarpiin/Android/Toolchains/google-clang/bin:/home/yarpiin/Android/Toolchains/google-gcc/bin:${PATH}" \
+        PATH="/home/yarpiin/Android/Toolchains/google-clang-sammy/bin:/home/yarpiin/Android/Toolchains/google-gcc/bin:${PATH}" \
         make -j$(nproc --all) O=out \
                       ARCH=arm64 \
                       CC=clang \
@@ -79,10 +79,10 @@ function make_star_kernel {
 
 function make_star2_kernel {
 		echo
-        export LOCALVERSION=-`echo $STAR2_VER$YARPIIN_PERM_VER`
+        export LOCALVERSION=-`echo $STAR2_VER$YARPIIN_VER`
         make O=out ARCH=arm64 $STAR2DEFCONFIG
 
-        PATH="/home/yarpiin/Android/Toolchains/google-clang/bin:/home/yarpiin/Android/Toolchains/google-gcc/bin:${PATH}" \
+        PATH="/home/yarpiin/Android/Toolchains/google-clang-sammy/bin:/home/yarpiin/Android/Toolchains/google-gcc/bin:${PATH}" \
         make -j$(nproc --all) O=out \
                       ARCH=arm64 \
                       CC=clang \
@@ -95,10 +95,10 @@ function make_star2_kernel {
 
 function make_crown_kernel {
 		echo
-        export LOCALVERSION=-`echo $CROWN_VER$YARPIIN_PERM_VER`
+        export LOCALVERSION=-`echo $CROWN_VER$YARPIIN_VER`
         make O=out ARCH=arm64 $CROWNDEFCONFIG
 
-        PATH="/home/yarpiin/Android/Toolchains/google-clang/bin:/home/yarpiin/Android/Toolchains/google-gcc/bin:${PATH}" \
+        PATH="/home/yarpiin/Android/Toolchains/google-clang-sammy/bin:/home/yarpiin/Android/Toolchains/google-gcc/bin:${PATH}" \
         make -j$(nproc --all) O=out \
                       ARCH=arm64 \
                       CC=clang \
@@ -297,7 +297,7 @@ while read -p "Do you want to zip kernel (y/n)? " dchoice
 do
 case "$dchoice" in
 	y|Y)
-		make_perm_zip
+		make_zip
 		break
 		;;
 	n|N )
