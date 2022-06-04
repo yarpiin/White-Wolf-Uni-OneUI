@@ -627,8 +627,10 @@ extern int haptic_homekey_press(void)
 
 	mutex_lock(&ddata->mutex);
 	ddata->timeout = HOMEKEY_DURATION;
+#ifdef CONFIG_PLATFORM_ONEUI
 	sec_haptic_set_frequency(ddata, HOMEKEY_PRESS_FREQ);
 	sec_haptic_set_intensity(ddata, ddata->force_touch_intensity);
+#endif
 	sec_haptic_enable(ddata, true);
 
 	pr_info("%s freq:%d, intensity:%d, time:%d\n", __func__,
@@ -653,8 +655,10 @@ extern int haptic_homekey_release(void)
 
 	mutex_lock(&ddata->mutex);
 	ddata->timeout = HOMEKEY_DURATION;
+#ifdef CONFIG_PLATFORM_ONEUI
 	sec_haptic_set_frequency(ddata, HOMEKEY_RELEASE_FREQ);
 	sec_haptic_set_intensity(ddata, ddata->force_touch_intensity);
+#endif
 	sec_haptic_enable(ddata, true);
 
 	pr_info("%s freq:%d, intensity:%d, time:%d\n", __func__,
