@@ -18,10 +18,9 @@ STARDEFCONFIG="exynos9810-starlte_defconfig"
 STAR2DEFCONFIG="exynos9810-star2lte_defconfig"
 CROWNDEFCONFIG="exynos9810-crownlte_defconfig"
 
-# Permissive Defconfigs
-PERM_STARDEFCONFIG="perm_exynos9810-starlte_defconfig"
-PERM_STAR2DEFCONFIG="perm_yarpiin_defconfig"
-PERM_CROWNDEFCONFIG="perm_exynos9810-crownlte_defconfig"
+STARAOSPDEFCONFIG="exynos9810-starlte_defconfig"
+STAR2AOSPDEFCONFIG="exynos9810-star2lte_defconfig"
+CROWNAOSPDEFCONFIG="exynos9810-crownlte_defconfig"
 
 # Build dirs
 KERNEL_DIR="/home/yarpiin/Android/Kernel/Samsung/White-Wolf-Uni-OneUI"
@@ -31,10 +30,10 @@ TOOLCHAIN_DIR="/home/yarpiin/Android/Toolchains"
 
 # Kernel Details
 BASE_YARPIIN_VER="WHITE.WOLF.ONEUI.UNI"
-VER=".SE.002"
-PERM=".PERM"
+BASE_AOSP_YARPIIN_VER="WHITE.WOLF.AOSP.UNI"
+VER=".SE.003"
 YARPIIN_VER="$BASE_YARPIIN_VER$VER"
-YARPIIN_PERM_VER="$BASE_YARPIIN_VER$VER$PERM"
+YARPIIN_AOSP_VER="$BASE_AOSP_YARPIIN_VER$VER"
 STAR_VER="S9."
 STAR2_VER="S9+."
 CROWN_VER="N9."
@@ -77,10 +76,42 @@ function make_star_kernel {
         cp -vr $ZIMAGE_DIR/$DTBIMAGE $KERNELFLASHER_DIR/Kernel/G960/dtb.img
 }
 
+function make_star_aosp_kernel {
+		echo
+        export LOCALVERSION=-`echo $STAR_VER$YARPIIN_AOSP_VER`
+        make O=out ARCH=arm64 $STARAOSPDEFCONFIG
+
+        PATH="/home/yarpiin/Android/Toolchains/google-clang-sammy/bin:/home/yarpiin/Android/Toolchains/google-gcc/bin:${PATH}" \
+        make -j$(nproc --all) O=out \
+                      ARCH=arm64 \
+                      CC=clang \
+                      CLANG_TRIPLE=aarch64-linux-gnu- \
+                      CROSS_COMPILE=aarch64-linux-android-
+
+		cp -vr $ZIMAGE_DIR/$KERNEL $KERNELFLASHER_DIR/Kernel/G960/zImage
+        cp -vr $ZIMAGE_DIR/$DTBIMAGE $KERNELFLASHER_DIR/Kernel/G960/dtb.img
+}
+
 function make_star2_kernel {
 		echo
         export LOCALVERSION=-`echo $STAR2_VER$YARPIIN_VER`
         make O=out ARCH=arm64 $STAR2DEFCONFIG
+
+        PATH="/home/yarpiin/Android/Toolchains/google-clang-sammy/bin:/home/yarpiin/Android/Toolchains/google-gcc/bin:${PATH}" \
+        make -j$(nproc --all) O=out \
+                      ARCH=arm64 \
+                      CC=clang \
+                      CLANG_TRIPLE=aarch64-linux-gnu- \
+                      CROSS_COMPILE=aarch64-linux-android-
+
+		cp -vr $ZIMAGE_DIR/$KERNEL $KERNELFLASHER_DIR/Kernel/G965/zImage
+        cp -vr $ZIMAGE_DIR/$DTBIMAGE $KERNELFLASHER_DIR/Kernel/G965/dtb.img
+}
+
+function make_star2_aosp_kernel {
+		echo
+        export LOCALVERSION=-`echo $STAR2_VER$YARPIIN_AOSP_VER`
+        make O=out ARCH=arm64 $STAR2AOSPDEFCONFIG
 
         PATH="/home/yarpiin/Android/Toolchains/google-clang-sammy/bin:/home/yarpiin/Android/Toolchains/google-gcc/bin:${PATH}" \
         make -j$(nproc --all) O=out \
@@ -109,31 +140,20 @@ function make_crown_kernel {
         cp -vr $ZIMAGE_DIR/$DTBIMAGE $KERNELFLASHER_DIR/Kernel/N960/dtb.img
 }
 
-function make_perm_star_kernel {
+function make_crown_aosp_kernel {
 		echo
-        export LOCALVERSION=-`echo $STAR_VER$YARPIIN_PERM_VER`
-		make $STARDEFCONFIG
-		make $THREAD
-		cp -vr $ZIMAGE_DIR/$KERNEL $KERNELFLASHER_DIR/kernel/G960/zImage
-        cp -vr $ZIMAGE_DIR/$DTBIMAGE $KERNELFLASHER_DIR/kernel/G960/zImage-dtb
-}
+        export LOCALVERSION=-`echo $CROWN_VER$YARPIIN_AOSP_VER`
+        make O=out ARCH=arm64 $CROWNAOSPDEFCONFIG
 
-function make_perm_star2_kernel {
-		echo
-        export LOCALVERSION=-`echo $STAR2_VER$YARPIIN_PERM_VER`
-		make $STAR2DEFCONFIG
-		make $THREAD
-		cp -vr $ZIMAGE_DIR/$KERNEL $KERNELFLASHER_DIR/kernel/G965/zImage
-        cp -vr $ZIMAGE_DIR/$DTBIMAGE $KERNELFLASHER_DIR/kernel/G965/zImage-dtb
-}
+        PATH="/home/yarpiin/Android/Toolchains/google-clang-sammy/bin:/home/yarpiin/Android/Toolchains/google-gcc/bin:${PATH}" \
+        make -j$(nproc --all) O=out \
+                      ARCH=arm64 \
+                      CC=clang \
+                      CLANG_TRIPLE=aarch64-linux-gnu- \
+                      CROSS_COMPILE=aarch64-linux-android-
 
-function make_perm_crown_kernel {
-		echo
-        export LOCALVERSION=-`echo $CROWN_VER$YARPIIN_PERM_VER`
-		make $CROWNDEFCONFIG
-		make $THREAD
-		cp -vr $ZIMAGE_DIR/$KERNEL $KERNELFLASHER_DIR/kernel/N960/zImage
-        cp -vr $ZIMAGE_DIR/$DTBIMAGE $KERNELFLASHER_DIR/kernel/N960/zImage-dtb
+		cp -vr $ZIMAGE_DIR/$KERNEL $KERNELFLASHER_DIR/Kernel/N960/zImage
+        cp -vr $ZIMAGE_DIR/$DTBIMAGE $KERNELFLASHER_DIR/Kernel/N960/dtb.img
 }
 
 function make_zip {
@@ -143,10 +163,10 @@ function make_zip {
 		cd $KERNEL_DIR
 }
 
-function make_perm_zip {
+function make_aosp_zip {
 		cd $KERNELFLASHER_DIR
-		zip -r9 `echo $YARPIIN_PERM_VER`.zip *
-		mv  `echo $YARPIIN_PERM_VER`.zip $ZIP_MOVE
+		zip -r9 `echo $YARPIIN_AOSP_VER`.zip *
+		mv  `echo $YARPIIN_AOSP_VER`.zip $ZIP_MOVE
 		cd $KERNEL_DIR
 }
 DATE_START=$(date +"%s")
@@ -298,6 +318,152 @@ do
 case "$dchoice" in
 	y|Y)
 		make_zip
+		break
+		;;
+	n|N )
+		break
+		;;
+	* )
+		echo
+		echo "Invalid try again!"
+		echo
+		;;
+esac
+done
+
+echo
+
+while read -p "Do you want to clean stuffs (y/n)? " cchoice
+do
+case "$cchoice" in
+	y|Y )
+		clean_all
+		echo
+		echo "All Cleaned now."
+		break
+		;;
+	n|N )
+		break
+		;;
+	* )
+		echo
+		echo "Invalid try again!"
+		echo
+		;;
+esac
+done
+
+echo
+
+while read -p "Do you want to build AOSP G965 kernel (y/n)? " dchoice
+do
+case "$dchoice" in
+	y|Y)
+		make_star2_aosp_kernel
+		break
+		;;
+	n|N )
+		break
+		;;
+	* )
+		echo
+		echo "Invalid try again!"
+		echo
+		;;
+esac
+done
+
+echo
+
+while read -p "Do you want to clean stuffs (y/n)? " cchoice
+do
+case "$cchoice" in
+	y|Y )
+		clean_all
+		echo
+		echo "All Cleaned now."
+		break
+		;;
+	n|N )
+		break
+		;;
+	* )
+		echo
+		echo "Invalid try again!"
+		echo
+		;;
+esac
+done
+
+echo
+
+while read -p "Do you want to build AOSP G960 kernel (y/n)? " dchoice
+do
+case "$dchoice" in
+	y|Y)
+		make_star_aosp_kernel
+		break
+		;;
+	n|N )
+		break
+		;;
+	* )
+		echo
+		echo "Invalid try again!"
+		echo
+		;;
+esac
+done
+
+echo
+
+while read -p "Do you want to clean stuffs (y/n)? " cchoice
+do
+case "$cchoice" in
+	y|Y )
+		clean_all
+		echo
+		echo "All Cleaned now."
+		break
+		;;
+	n|N )
+		break
+		;;
+	* )
+		echo
+		echo "Invalid try again!"
+		echo
+		;;
+esac
+done
+
+echo
+
+while read -p "Do you want to build AOSP N960 kernel (y/n)? " dchoice
+do
+case "$dchoice" in
+	y|Y)
+		make_crown_aosp_kernel
+		break
+		;;
+	n|N )
+		break
+		;;
+	* )
+		echo
+		echo "Invalid try again!"
+		echo
+		;;
+esac
+done
+
+echo
+
+while read -p "Do you want to zip kernel (y/n)? " dchoice
+do
+case "$dchoice" in
+	y|Y)
+		make_aosp_zip
 		break
 		;;
 	n|N )
