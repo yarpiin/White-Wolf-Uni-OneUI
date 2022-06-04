@@ -34,8 +34,14 @@
 #define BOOST_ON                        1
 #define BOOST_OFF                       0
 
+#ifdef CONFIG_PLATFORM_AOSP
 #define HOMEKEY_PRESS_FREQ		0
 #define HOMEKEY_RELEASE_FREQ		0
+#else
+#define HOMEKEY_PRESS_FREQ		5
+#define HOMEKEY_RELEASE_FREQ		6
+#endif
+
 #define HOMEKEY_DURATION			7
 
 struct vib_packet {
